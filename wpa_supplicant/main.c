@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 
 	for (;;) {
 		c = getopt(argc, argv,
-			   "b:Bc:C:D:de:f:g:G:hi:I:KLMm:No:O:p:P:qsTtuvWyz:");
+			   "b:Bc:C:D:de:f:g:G:hi:I:KLMm:No:O:p:P:qsTtuVvWyz:");
 		if (c < 0)
 			break;
 		switch (c) {
@@ -313,6 +313,15 @@ int main(int argc, char *argv[])
 			params.dbus_ctrl_interface = 1;
 			break;
 #endif /* CONFIG_CTRL_IFACE_DBUS_NEW */
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+		case 'V':
+			params.varlink_ctrl_interface = 1;
+			break;
+#else
+		case 'V':
+			printf("Varlink is not compiled with wpa_supplicant in this version!\n");
+			break;
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
 		case 'v':
 			printf("%s\n", wpa_supplicant_version);
 			exitcode = 0;

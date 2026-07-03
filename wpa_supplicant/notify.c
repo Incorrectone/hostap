@@ -17,6 +17,9 @@
 #include "binder/binder.h"
 #include "dbus/dbus_common.h"
 #include "dbus/dbus_new.h"
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+#include "varlink/varlink_common.h"
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
 #include "rsn_supp/wpa.h"
 #include "rsn_supp/pmksa_cache.h"
 #include "fst/fst.h"
@@ -38,6 +41,14 @@ int wpas_notify_supplicant_initialized(struct wpa_global *global)
 	}
 #endif /* CONFIG_CTRL_IFACE_DBUS_NEW */
 
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+	if (global->params.varlink_ctrl_interface) {
+		global->varlink = wpas_varlink_init(global);
+		if (global->varlink == NULL)
+			return -1;
+	}
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
+
 #ifdef CONFIG_BINDER
 	global->binder = wpas_binder_init(global);
 	if (!global->binder)
@@ -54,6 +65,11 @@ void wpas_notify_supplicant_deinitialized(struct wpa_global *global)
 	if (global->dbus)
 		wpas_dbus_deinit(global->dbus);
 #endif /* CONFIG_CTRL_IFACE_DBUS_NEW */
+
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+	if (global->varlink)
+		wpas_varlink_deinit(global->varlink);
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
 
 #ifdef CONFIG_BINDER
 	if (global->binder)

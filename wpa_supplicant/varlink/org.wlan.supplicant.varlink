@@ -1,0 +1,4 @@
+interface org.wlan.supplicant
+
+# Returns the current state of the daemon
+method GetState() -> (state: string)

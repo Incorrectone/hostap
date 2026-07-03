@@ -1800,6 +1800,21 @@ CFLAGS += $(DBUS_INCLUDE)
 LIBS += $(DBUS_LIBS)
 endif
 
+ifdef CONFIG_CTRL_IFACE_VARLINK
+CFLAGS += -DCONFIG_CTRL_IFACE_VARLINK
+OBJS += varlink/varlink_server.o
+OBJS += varlink/varlink_methods.o
+OBJS += varlink/varlink_events.o
+ifndef VARLINK_LIBS
+VARLINK_LIBS := $(shell $(PKG_CONFIG) --libs libvarlink)
+endif
+ifndef VARLINK_INCLUDE
+VARLINK_INCLUDE := $(shell $(PKG_CONFIG) --cflags libvarlink)
+endif
+CFLAGS += $(VARLINK_INCLUDE)
+LIBS += $(VARLINK_LIBS)
+endif
+
 ifdef CONFIG_READLINE
 OBJS_c += ../src/utils/edit_readline.o
 LIBS_c += -lreadline -lncurses
@@ -2399,6 +2414,7 @@ libpasn.so: $(LIBPASNSO)
 clean: common-clean
 	$(MAKE) -C ../src clean
 	$(MAKE) -C dbus clean
+	$(MAKE) -C varlink clean
 	rm -f core *~ *.o *.d *.gcno *.gcda *.gcov
 	rm -f eap_*.so $(WINALL) eapol_test preauth_test
 	rm -f wpa_priv

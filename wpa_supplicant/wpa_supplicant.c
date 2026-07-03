@@ -8639,6 +8639,11 @@ struct wpa_global * wpa_supplicant_init(struct wpa_params *params)
 	global->params.daemonize = params->daemonize;
 	global->params.wait_for_monitor = params->wait_for_monitor;
 	global->params.dbus_ctrl_interface = params->dbus_ctrl_interface;
+
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+	global->params.varlink_ctrl_interface = params->varlink_ctrl_interface;
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
+
 	global->params.show_details = params->show_details;
 
 	if (params->pid_file) {

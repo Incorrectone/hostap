@@ -53,6 +53,10 @@ struct ctrl_iface_global_priv;
 struct wpas_dbus_priv;
 struct wpas_binder_priv;
 
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+struct wpas_varlink_priv;
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
+
 /**
  * struct wpa_interface - Parameters for wpa_supplicant_add_iface()
  */
@@ -206,6 +210,13 @@ struct wpa_params {
 	 */
 	int dbus_ctrl_interface;
 
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+	/**
+	 * varlink_ctrl_interface - Enable the Varlink control interface
+	*/
+	int varlink_ctrl_interface;
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
+
 	/**
 	 * wpa_debug_file_path - Path of debug file or %NULL to use stdout
 	 */
@@ -304,6 +315,9 @@ struct wpa_global {
 	struct wpa_params params;
 	struct ctrl_iface_global_priv *ctrl_iface;
 	struct wpas_dbus_priv *dbus;
+#ifdef CONFIG_CTRL_IFACE_VARLINK
+    struct wpas_varlink_priv *varlink;
+#endif /* CONFIG_CTRL_IFACE_VARLINK */
 	struct wpas_binder_priv *binder;
 	void **drv_priv;
 	size_t drv_count;
