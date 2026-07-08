@@ -1,5 +1,5 @@
 /*
- * wpa_supplicant D-Bus control interface - common definitions
+ * wpa_supplicant Varlink control interface - Methods
  * Copyright (c) 2026, Kartik Rajput <incorrectmail101@gmail.com>
  *
  * This software may be distributed under the terms of the BSD license.
